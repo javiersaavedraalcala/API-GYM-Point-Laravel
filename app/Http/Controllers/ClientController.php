@@ -27,7 +27,7 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        DB::transaction(function () use ($request) {
+        $client =  DB::transaction(function () use ($request) {
             $validated = $request->validated();
             $validated['uid'] = uniqid();
             $client = new Client($validated);
@@ -35,10 +35,10 @@ class ClientController extends Controller
 
             event(new SubscriptionEvent($client, $request['plan']));
 
-            return new ClientResource($client);
+            return $client;
         });
 
-        return response()->assertServerError();
+        return new ClientResource($client);
     }
 
     /**

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Mail\WelcomeClientMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +26,15 @@ Route::middleware('auth:sanctum')->group(function() {
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
+
+Route::get('test', function() {
+    Mail::send(new WelcomeClientMail(
+        'a@s.com',
+        'Robert',
+        '2024-04-01',
+        '2025-04-01',
+        'anually'
+    ));
+
+    return "success";
+});

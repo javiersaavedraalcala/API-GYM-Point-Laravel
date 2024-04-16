@@ -2,9 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Mail\WelcomeClientMail;
 use App\Models\Subscription;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class SubscriptionListener
 {
@@ -49,6 +51,14 @@ class SubscriptionListener
         $subscription->membership_end = $dateEnd;
         $subscription->plan = $event->plan;
         $subscription->save();
+
+        Mail::send(new WelcomeClientMail(
+            $event->client->email,
+            $event->client->name,
+            date('Y-m-d H:i:s'),
+            $subscription->membership_end,
+            $subscription->plan
+        ));
     }
 
     private function addTime(string $period)
