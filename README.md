@@ -3,3 +3,4 @@ This application applications contains everything you need for gym management bu
 
 ## License 
 [MIT](./LICENSE.md)
+ 
